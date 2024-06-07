@@ -64,6 +64,7 @@ struct NotebookScreen: View {
                     
                     TextField("Введите заметку", text: $editingText)
                         .padding()
+                        .foregroundColor(.red)
                         .textInputAutocapitalization(.words)
                         .onSubmit {
                             saveNote()
