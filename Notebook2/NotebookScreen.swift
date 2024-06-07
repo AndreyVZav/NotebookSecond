@@ -34,7 +34,7 @@ class NotesManager: ObservableObject {
             }
         }
     }
-    // варжврпжшвкрпэвкпрвап
+    
     
 }
 
