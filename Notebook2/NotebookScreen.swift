@@ -52,7 +52,8 @@ struct NotebookScreen: View {
                 ScrollView {
                     // Note2 - это Identifiable, на это никак не используется. Либо Identifiable, либо, что мне больше нравится использовать ForEach(notes2) {...} и в остальных местах вместо selectedNoteIndex использовать selectedNoteID// поправил
                     ForEach(notesManager.notes) { note in
-                        Text(note.text).padding(.trailing, 200)
+                        Text(note.text)
+                            .padding(.trailing, 250)
                             .onTapGesture {
                                 isEditing = true
                                 editingText = note.text
@@ -60,16 +61,22 @@ struct NotebookScreen: View {
                             }
                     }
                     
-                        
-                    
-                    TextField("Введите заметку", text: $editingText)
-                        .padding()
-                        .foregroundColor(.red)
-                        .textInputAutocapitalization(.words)
-                        .onSubmit {
-                            saveNote()
-                        }
                    
+                    HStack {
+                        TextField("Введите заметку", text: $editingText)
+                            .padding()
+                            .foregroundColor(.red)
+                            .textInputAutocapitalization(.words)
+                            .onSubmit {
+                                saveNote()
+                            }
+                       
+                        Button {
+                            deleteNote()
+                        } label: {
+                            Image(.delete)
+                        }
+                    }
                 }
                 .navigationTitle("Список")
                 .toolbar {
@@ -85,21 +92,14 @@ struct NotebookScreen: View {
                     ToolbarItem(placement: .navigationBarLeading) {
                         // Внутри Button много кода на мой взгляд, я бы это уже выносил в отдельный метод
                         Button {
-                            deleteNote()
+                            deleteAllNote()
                         } label: {
                             Image(.trash)
                         }
                     }
                     
-                    
                 }.navigationBarTitleDisplayMode(.inline)
-                
-                
             }
-            
-            
-  //      }
-        
     }
     
     
@@ -114,6 +114,16 @@ struct NotebookScreen: View {
         }
     }
     
+    func deleteAllNote() {
+        if let id = selectedNoteID {
+            if let index = notesManager.notes.firstIndex(where: { $0.id == id }) {
+                notesManager.notes.removeAll()
+                notesManager.saveNotes()
+                resetEditingState() // Reset the editing state
+                
+            }
+        }
+    }
     // Функция для сохранения заметки
     func saveNote() {
         if let id = selectedNoteID {
