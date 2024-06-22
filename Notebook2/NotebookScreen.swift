@@ -45,15 +45,13 @@ struct NotebookScreen: View {
     @State private var selectedNoteID: UUID?
     
     var body: some View {
-   //     NavigationView {
-            
-            
-            VStack {
-                ScrollView {
+
+            VStack(spacing: 0) {
+                ScrollView([ .vertical]) {
                     // Note2 - это Identifiable, на это никак не используется. Либо Identifiable, либо, что мне больше нравится использовать ForEach(notes2) {...} и в остальных местах вместо selectedNoteIndex использовать selectedNoteID// поправил
                     ForEach(notesManager.notes) { note in
                         Text(note.text)
-                            .padding(.trailing, 250)
+                            .border(Color.red)
                             .onTapGesture {
                                 isEditing = true
                                 editingText = note.text
@@ -62,7 +60,7 @@ struct NotebookScreen: View {
                     }
                     
                    
-                    HStack {
+                    HStack(spacing: 0) {
                         TextField("Введите заметку", text: $editingText)
                             .padding()
                             .foregroundColor(.red)
@@ -77,6 +75,7 @@ struct NotebookScreen: View {
                             Image(.delete)
                         }
                     }
+                    
                 }
                 .navigationTitle("Список")
                 .toolbar {
@@ -115,15 +114,11 @@ struct NotebookScreen: View {
     }
     
     func deleteAllNote() {
-        if let id = selectedNoteID {
-            if let index = notesManager.notes.firstIndex(where: { $0.id == id }) {
-                notesManager.notes.removeAll()
-                notesManager.saveNotes()
-                resetEditingState() // Reset the editing state
-                
-            }
-        }
+        notesManager.notes.removeAll()
+        notesManager.saveNotes()
+        resetEditingState() // Reset the editing state
     }
+    
     // Функция для сохранения заметки
     func saveNote() {
         if let id = selectedNoteID {
