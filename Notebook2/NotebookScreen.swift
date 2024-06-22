@@ -49,7 +49,7 @@ struct NotebookScreen: View {
         
         
         ScrollView {
-            VStack {
+            VStack(alignment: .leading) {
                 // Note2 - это Identifiable, на это никак не используется. Либо Identifiable, либо, что мне больше нравится использовать ForEach(notes2) {...} и в остальных местах вместо selectedNoteIndex использовать selectedNoteID// поправил
                 ForEach(notesManager.notes) { note in
                     Text(note.text)
